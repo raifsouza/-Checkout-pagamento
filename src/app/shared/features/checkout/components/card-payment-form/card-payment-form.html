@@ -1,0 +1,114 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div class="mb-3">
+    <label for="cardNumber" class="form-label fw-medium">Número do cartão</label>
+    <input
+      id="cardNumber"
+      type="text"
+      inputmode="numeric"
+      autocomplete="cc-number"
+      placeholder="0000 0000 0000 0000"
+      class="form-control form-control-lg"
+      [class.is-invalid]="hasError('number')"
+      formControlName="number"
+      (input)="onCardNumberInput($event)"
+    />
+    @if (hasError('number')) {
+      <div class="invalid-feedback">
+        @if (form.controls.number.errors?.['required']) {
+          Informe o número do cartão.
+        } @else {
+          Número inválido. Confira os dígitos do cartão.
+        }
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <label for="holderName" class="form-label fw-medium mb-1">Nome no cartão</label>
+      <small class="text-secondary">
+        {{ form.controls.holderName.value.length }}/60
+      </small>
+    </div>
+    <input
+      id="holderName"
+      type="text"
+      maxlength="60"
+      autocomplete="cc-name"
+      placeholder="Nome completo"
+      class="form-control form-control-lg"
+      [class.is-invalid]="hasError('holderName')"
+      formControlName="holderName"
+      (input)="onHolderNameInput($event)"
+    />
+    @if (hasError('holderName')) {
+      <div class="invalid-feedback">
+        @if (form.controls.holderName.errors?.['maxlength']) {
+          Máximo de 60 caracteres atingido.
+        } @else {
+          Informe o nome como aparece no cartão (apenas letras e espaço).
+        }
+      </div>
+    }
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6">
+      <label for="expiration" class="form-label fw-medium">Validade</label>
+      <input
+        id="expiration"
+        type="text"
+        inputmode="numeric"
+        autocomplete="cc-exp"
+        placeholder="MM/AA"
+        class="form-control form-control-lg"
+        [class.is-invalid]="hasError('expiration')"
+        formControlName="expiration"
+        (input)="onExpirationInput($event)"
+      />
+      @if (hasError('expiration')) {
+        <div class="invalid-feedback">
+          @if (form.controls.expiration.errors?.['expiredCard']) {
+            Cartão vencido.
+          } @else {
+            Use o formato MM/AA válido.
+          }
+        </div>
+      }
+    </div>
+
+    <div class="col-6">
+      <label for="cvv" class="form-label fw-medium">CVV</label>
+      <input
+        id="cvv"
+        type="password"
+        inputmode="numeric"
+        autocomplete="cc-csc"
+        placeholder="123"
+        class="form-control form-control-lg"
+        [class.is-invalid]="hasError('cvv')"
+        formControlName="cvv"
+        (input)="onCvvInput($event)"
+      />
+      @if (hasError('cvv')) {
+        <div class="invalid-feedback">
+          Use 3 ou 4 dígitos.
+        </div>
+      }
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary btn-lg w-100 fw-semibold rounded-3"
+    [disabled]="form.invalid || disabled()"
+  >
+    Pagar {{ amount() | currency : currency() : 'symbol' : '1.2-2' : 'pt-BR' }}
+  </button>
+
+  @if (form.invalid && form.touched) {
+    <p class="text-danger small text-center mt-2 mb-0">
+      Corrija os campos destacados para continuar.
+    </p>
+  }
+</form>

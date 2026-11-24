@@ -1,0 +1,17 @@
+<div class="min-vh-100 d-flex flex-column">
+  <header class="bg-white border-bottom py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="navbar-brand fw-bold text-dark text-decoration-none d-flex align-items-center gap-2" routerLink="/pagamento">
+        <span class="badge text-bg-primary rounded-2 px-2 py-1">N</span>
+        <span>nexo</span>
+      </a>
+      <span class="text-secondary small">Checkout</span>
+    </div>
+  </header>
+
+  <main class="flex-grow-1 py-4 py-md-5">
+    <div class="container">
+      <router-outlet />
+    </div>
+  </main>
+</div>
